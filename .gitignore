@@ -1,0 +1,13 @@
+# Build outputs and local settings
+bin/
+obj/
+dist/
+artifacts/
+.vs/
+*.user
+*.suo
+*.log
+.env
+.env.*
+*.pfx
+*.snk

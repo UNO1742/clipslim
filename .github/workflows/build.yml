@@ -1,0 +1,25 @@
+name: Windows build
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Build and self-test
+        shell: pwsh
+        run: |
+          ./build.ps1
+          $exe = Join-Path $PWD 'dist/clipslim-win-x64/ClipSlim-v1.7.1.exe'
+          $test = Start-Process $exe -ArgumentList @('--self-test', (Join-Path $PWD 'artifacts/self-test')) -Wait -PassThru
+          if ($test.ExitCode -ne 0) { throw 'Self-test failed' }
+          Compress-Archive -Path dist/clipslim-win-x64 -DestinationPath dist/clipslim-win-x64.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: clipslim-win-x64
+          path: dist/clipslim-win-x64.zip
