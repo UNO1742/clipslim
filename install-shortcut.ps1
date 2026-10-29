@@ -1,5 +1,5 @@
 ﻿$ErrorActionPreference = 'Stop'
-$exe = Join-Path $PSScriptRoot 'ClipSlim-v1.7.1.exe'
+$exe = Join-Path $PSScriptRoot 'ClipSlim-v1.7.2.exe'
 if (!(Test-Path -LiteralPath $exe)) { throw 'Extract the release ZIP before creating the shortcut.' }
 $shell = New-Object -ComObject WScript.Shell
 $shortcut = $shell.CreateShortcut((Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) '轻图.lnk'))

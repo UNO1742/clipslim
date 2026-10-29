@@ -105,7 +105,7 @@ internal sealed class OnlineBrowserBridge : IDisposable
         var window = AutomationElement.FromHandle(captured.Window);
         if (ReadUrl(window) != captured.Url) throw new InvalidOperationException("网页已切换，已取消发送。请在正确的金山表格里重新选格。");
         RestoreIfMinimized(captured.Window);
-        if (!SetForegroundWindow(captured.Window) || GetForegroundWindow() != captured.Window) throw new InvalidOperationException("无法切回 Edge，未发送。请先选中网页目标格再试。");
+        if (!ActivateWindow(captured.Window)) throw new InvalidOperationException("Windows 未允许切回 Edge，已停止发送。请先在网页点选目标格，再点击新版拼图按钮。");
         // Restore the captured page control, never the address bar or a toolbar input.
         captured.Focus.SetFocus();
         AutomationElement focus = AutomationElement.FocusedElement;
@@ -118,6 +118,20 @@ internal sealed class OnlineBrowserBridge : IDisposable
     {
         // SW_RESTORE also removes maximization/fullscreen. Do not touch a visible window.
         if (IsIconic(window)) ShowWindowAsync(window, 9);
+    }
+    internal static bool ActivateWindow(IntPtr window)
+    {
+        if (GetForegroundWindow() == window) return true;
+        SetForegroundWindow(window);
+        // Activation may finish after SetForegroundWindow returns. The observed foreground
+        // window is authoritative, rather than the API's return value or an immediate check.
+        Stopwatch watch = Stopwatch.StartNew();
+        while (watch.ElapsedMilliseconds < 800)
+        {
+            if (GetForegroundWindow() == window) return true;
+            Thread.Sleep(15);
+        }
+        return GetForegroundWindow() == window;
     }
     public void Dispose()
     {

@@ -10,8 +10,8 @@ $references = foreach ($assembly in @('UIAutomationClient', 'UIAutomationTypes',
     if (!$reference) { throw "Missing framework assembly: $assembly" }
     '/r:' + $reference.FullName
 }
-$executable = Join-Path $OutputDirectory 'ClipSlim-v1.7.1.exe'
+$executable = Join-Path $OutputDirectory 'ClipSlim-v1.7.2.exe'
 & $compiler /nologo /target:winexe /optimize+ /r:System.Drawing.dll /r:System.Windows.Forms.dll /r:Microsoft.CSharp.dll @references "/out:$executable" "/win32icon:$(Join-Path $PSScriptRoot 'assets/clipslim.ico')" (Join-Path $PSScriptRoot 'src/ClipSlim.cs') (Join-Path $PSScriptRoot 'src/OnlineBrowserBridge.cs')
 if ($LASTEXITCODE -ne 0) { throw 'ClipSlim compilation failed.' }
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'LICENSE'),(Join-Path $PSScriptRoot 'README.md'),(Join-Path $PSScriptRoot 'install-shortcut.ps1') -Destination $OutputDirectory -Force
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'LICENSE'),(Join-Path $PSScriptRoot 'README.md'),(Join-Path $PSScriptRoot 'CHANGELOG.md'),(Join-Path $PSScriptRoot 'install-shortcut.ps1') -Destination $OutputDirectory -Force
 Write-Output "Built: $executable"

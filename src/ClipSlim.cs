@@ -51,10 +51,10 @@ internal static class Program
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         bool created;
-        singleInstance = new Mutex(false, "Local\\ClipSlim.Collage.v171." + WindowsIdentity.GetCurrent().User.Value, out created);
+        singleInstance = new Mutex(false, "Local\\ClipSlim.Collage.v172." + WindowsIdentity.GetCurrent().User.Value, out created);
         if (!created)
         {
-            foreach (var process in System.Diagnostics.Process.GetProcessesByName("ClipSlim-v1.7.1"))
+            foreach (var process in System.Diagnostics.Process.GetProcessesByName("ClipSlim-v1.7.2"))
             {
                 using (process) if (process.MainWindowHandle != IntPtr.Zero) { ShowWindowAsync(process.MainWindowHandle, 9); SetForegroundWindow(process.MainWindowHandle); break; }
             }
@@ -404,7 +404,7 @@ internal sealed class MainWindow : Form
 
     public MainWindow()
     {
-        Text = "轻图 1.7.1 · 在线自动插入";
+        Text = "轻图 1.7.2 · 在线自动插入";
         Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         Font = new Font("Microsoft YaHei UI", 9F);
         ClientSize = new Size(560, 500);
@@ -545,7 +545,8 @@ internal sealed class MainWindow : Form
             try
             {
                 int count = WpsBridge.CenterActivePictures();
-                if (count > 0) Notify("已重新居中 " + count + " 张轻图图片，并按当前单元格保持比例适配。");
+                // Background maintenance must not replace insertion errors or user actions.
+                // The count also includes WPS adjustments that need another pass.
             }
             catch { /* WPS may be editing or displaying a dialog; retry on next tick. */ }
         };
@@ -568,7 +569,7 @@ internal sealed class MainWindow : Form
             {
                 try
                 {
-                    using (var pipe = new NamedPipeServerStream("ClipSlim.Collage.v171." + sid, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.None, 4096, 4096, security))
+                    using (var pipe = new NamedPipeServerStream("ClipSlim.Collage.v172." + sid, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.None, 4096, 4096, security))
                     {
                         pipe.WaitForConnection();
                         var reader = new StreamReader(pipe, Encoding.UTF8, false, 4096, true);

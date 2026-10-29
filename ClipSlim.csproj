@@ -3,8 +3,8 @@
     <TargetFramework>net48</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyName>ClipSlim-v1.7.1</AssemblyName>
-    <Version>1.7.1</Version>
+    <AssemblyName>ClipSlim-v1.7.2</AssemblyName>
+    <Version>1.7.2</Version>
     <ApplicationIcon>assets\clipslim.ico</ApplicationIcon>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>

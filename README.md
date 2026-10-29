@@ -6,6 +6,8 @@ Windows 上的轻量图片压缩工具：读取剪贴板，压缩图片，复制
 
 **[下载 Windows 版本](https://github.com/UNO1742/clipslim/releases/latest)** · [配套无缝拼图](https://github.com/UNO1742/seamless-puzzle-compact)
 
+当前版本 **1.7.2**：修复拼图联动时的前台切换权限与过早失败判断，后台居中不再覆盖插入错误。联动请搭配无缝拼图 **1.3.1**。详见 [更新记录](CHANGELOG.md)。
+
 ## 功能
 
 - 中文紧凑界面，可置顶；支持剪贴板、文件和拖放。
@@ -17,7 +19,7 @@ Windows 上的轻量图片压缩工具：读取剪贴板，压缩图片，复制
 
 ## 使用
 
-解压发布 ZIP，运行 `ClipSlim-v1.7.1.exe`。可运行 `install-shortcut.ps1` 创建桌面“轻图”快捷方式。
+解压发布 ZIP，运行 `ClipSlim-v1.7.2.exe`。可运行 `install-shortcut.ps1` 创建桌面“轻图”快捷方式。
 
 ### 桌面 WPS
 
@@ -54,7 +56,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 纯图片处理检查：
 
 ```powershell
-$test = Start-Process .\dist\clipslim-win-x64\ClipSlim-v1.7.1.exe -ArgumentList '--self-test', "$PWD\artifacts\self-test" -Wait -PassThru
+$test = Start-Process .\dist\clipslim-win-x64\ClipSlim-v1.7.2.exe -ArgumentList '--self-test', "$PWD\artifacts\self-test" -Wait -PassThru
 if ($test.ExitCode -ne 0) { throw 'Self-test failed' }
 ```
 
